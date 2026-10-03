@@ -51,7 +51,6 @@ function BookingForm({ selectedSeats, onSubmitBooking }) {
         backgroundColor: '#e9ecef', 
         padding: '15px', 
         borderRadius: '8px', 
-        borderLeft: '5px solid #2196F3',
         marginBottom: '20px' 
       }}>
         <p style={{ margin: '5px 0' }}>
