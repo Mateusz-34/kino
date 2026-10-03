@@ -30,7 +30,7 @@ function App() {
     }
   };
 
-  const handleBack = () => {
+  const handleReset = () => {
     setSelectedMovie(null);
     setSelectedShowtime("");
     setSelectedSeats([]);
@@ -47,10 +47,12 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1>Kino - Rezerwacja Biletów</h1>
+    <div style={{ padding: '20px', maxWidth: '850px', margin: '0 auto', fontFamily: 'Arial, sans-serif' }}>
+      <header style={{ borderBottom: '2px solid #eee', paddingBottom: '10px', marginBottom: '20px' }}>
+        <h1 style={{ color: '#2c3e50', margin: 0 }}>Kino - Panel Rezerwacji Miejsc</h1>
+      </header>
 
-      {!selectedMovie ? (
+      {!selectedMovie && (
         <MovieList 
           movies={moviesData}
           search={search}
@@ -59,22 +61,31 @@ function App() {
           setGenre={setGenre}
           onSelectMovie={handleSelectMovie}
         />
-      ) : bookingSummary ? (
-        <div style={{ border: '2px solid #4CAF50', padding: '20px', borderRadius: '8px' }}>
-          <h2>Podsumowanie rezerwacji</h2>
-          <p><strong>Film:</strong> {bookingSummary.movie}</p>
-          <p><strong>Godzina:</strong> {bookingSummary.showtime}</p>
-          <p><strong>Miejsca:</strong> {bookingSummary.seats.join(", ")}</p>
-          <p><strong>Imię i nazwisko:</strong> {bookingSummary.firstName} {bookingSummary.lastName}</p>
-          <p><strong>E-mail:</strong> {bookingSummary.email}</p>
-          <p><strong>Typ biletu:</strong> {bookingSummary.ticketType}</p>
-          <p><strong>Cena całkowita:</strong> {bookingSummary.totalPrice} zł</p>
-          <button onClick={handleBack}>Wróć do strony głównej</button>
-        </div>
-      ) : (
+      )}
+
+      {selectedMovie && !bookingSummary && (
         <div>
-          <button onClick={handleBack}>← Wróć do filmów</button>
-          <h2>Wybrany film: {selectedMovie.title} ({selectedShowtime})</h2>
+          <button 
+            onClick={handleReset}
+            style={{ 
+              padding: '8px 15px', 
+              cursor: 'pointer', 
+              backgroundColor: '#6c757d', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '4px',
+              marginBottom: '15px' 
+            }}
+          >
+            ← Wróć do listy filmów
+          </button>
+
+          <div style={{ backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>
+            <h2 style={{ margin: 0 }}>{selectedMovie.title}</h2>
+            <p style={{ margin: '5px 0 0 0', color: '#555' }}>
+              <strong>Godzina seansu:</strong> {selectedShowtime} | <strong>Czas trwania:</strong> {selectedMovie.duration} min
+            </p>
+          </div>
 
           <SeatPicker 
             occupiedSeats={occupiedSeats}
@@ -82,12 +93,51 @@ function App() {
             onToggleSeat={toggleSeat}
           />
 
-          <p>Liczba wybranych miejsc: <strong>{selectedSeats.length}</strong></p>
-
           <BookingForm 
-            selectedSeatsCount={selectedSeats.length}
+            selectedSeats={selectedSeats}
             onSubmitBooking={handleBookingSubmit}
           />
+        </div>
+      )}
+
+      {bookingSummary && (
+        <div style={{ 
+          border: '2px solid #28a745', 
+          backgroundColor: '#f4fbf7', 
+          padding: '25px', 
+          borderRadius: '10px',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.05)'
+        }}>
+          <h2 style={{ color: '#28a745', marginTop: 0 }}>✔ Rezerwacja została potwierdzona!</h2>
+          <hr style={{ border: 'none', borderTop: '1px solid #ced4da', margin: '15px 0' }} />
+          
+          <div style={{ lineHeight: '1.8' }}>
+            <p><strong>Film:</strong> {bookingSummary.movie}</p>
+            <p><strong>Godzina:</strong> {bookingSummary.showtime}</p>
+            <p><strong>Miejsca:</strong> {bookingSummary.seats.join(", ")}</p>
+            <p><strong>Imię i nazwisko:</strong> {bookingSummary.firstName} {bookingSummary.lastName}</p>
+            <p><strong>E-mail:</strong> {bookingSummary.email}</p>
+            <p><strong>Rodzaj biletu:</strong> {bookingSummary.ticketType}</p>
+            <p style={{ fontSize: '18px', color: '#155724' }}>
+              <strong>Łączna kwota do zapłaty:</strong> {bookingSummary.totalPrice} zł
+            </p>
+          </div>
+
+          <button 
+            onClick={handleReset}
+            style={{ 
+              marginTop: '15px', 
+              padding: '10px 20px', 
+              backgroundColor: '#007bff', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '4px', 
+              cursor: 'pointer',
+              fontSize: '16px'
+            }}
+          >
+            Zrób kolejną rezerwację
+          </button>
         </div>
       )}
     </div>
