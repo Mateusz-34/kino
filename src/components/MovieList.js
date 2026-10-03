@@ -21,7 +21,8 @@ function MovieList({ movies, search, setSearch, genre, setGenre, onSelectMovie }
             <option value="Wszystkie">Wszystkie gatunki</option>
             <option value="Dramat">Dramat</option>
             <option value="Gangsterski">Gangsterski</option>
-            <option value="Sci-Fi">Sci-Fi</option>
+            <option value="Komedia">Komedia</option>
+            <option value="Psychologiczny">Psychologiczny</option>
         </select>
         </div>
 
